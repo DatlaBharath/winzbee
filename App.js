@@ -53,7 +53,7 @@ const App = () => {
       setFormState(initialFormState);
       await API.graphql(graphqlOperation(CreateUser, {input: user}));
     } catch (err) {
-      console.log('error creating user:', err);
+      console.log('error creating userssssss:', err);
     }
   }
   return (
