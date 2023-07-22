@@ -4,67 +4,45 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type User {
   id: ID!
-  name: String!
-  email: String!
-  location: Location!
-  skills: [Skill!]!
-  events: [Event!]!
-  recommendedEvents: [Event!]!
-  posts: [Post!]!
-  connections: [User!]!
+  username: String!
+  password: String!
+  email: String
+  skills: [String]
+  nativePlace: String
+  academics: [String]
+  events: [String]
+  connectionlist: [String]
+  profile: String
+  status: String
+  latitude: Float
+  longitude: Float
 }
 
-type Skill {
+type Connections {
   id: ID!
-  name: String!
+  user1: User!
+  user2: User!
+  createdAt: AWSDateTime!
 }
 
-type Event {
+type Chat {
   id: ID!
-  name: String!
-  description: String!
-  location: Location!
-  attendees: [User!]!
-  startTime: String!
-  endTime: String!
+  fromUser: User!
+  toUser: User!
+  messages: String!
+  createdAt: AWSDateTime!
 }
 
-type Post {
-  id: ID!
-  content: String!
-  author: User!
-  createdAt: String!
-}
-
-type Location {
-  latitude: Float!
-  longitude: Float!
+type Mutation {
+  createUser(username: String!, password: String!, skills: [String], nativePlace: String, academics: [String]): User
+  createConnection(user1Id: ID!, user2Id: ID!): Connections
+  sendMessage(fromUserId: ID!, toUserId: ID!, message: String!): Chat
 }
 
 type Query {
   getUser(id: ID!): User
-  getAllUsers: [User!]!
-  getSkill(id: ID!): Skill
-  getAllSkills: [Skill!]!
-  getEvent(id: ID!): Event
-  getAllEvents: [Event!]!
-  getPost(id: ID!): Post
-  getAllPosts: [Post!]!
-}
-
-type Mutation {
-  createUser(name: String!, email: String!): User
-  addSkillToUser(userId: ID!, skillId: ID!): User
-  setMindsetToUser(userId: ID!, mindsetId: ID!): User
-  createEvent(
-    name: String!
-    description: String!
-    startTime: String!
-    endTime: String!
-  ): Event
-  addAttendeeToEvent(eventId: ID!, userId: ID!): Event
-  createPost(content: String!): Post
-  deletePost(postId: ID!): Boolean
-  sendConnectionRequest(userId: ID!): Boolean
-  acceptConnectionRequest(userId: ID!): Boolean
+  listUsers: [User]
+  listConnections(id: ID!): [Connections]
+  listChats(fromUserId: ID!, toUserId: ID!): [Chat]
+  getConnections(userId: ID!): [Connections]
 }
